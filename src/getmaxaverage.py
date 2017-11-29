@@ -1,7 +1,7 @@
 import multiprocessing as mp
 import sys
-import numpy as np
-import collections
+from numpy import cumsum as runningsum
+from collections import OrderedDict
 from fitparse import FitFile
 
 def get_timeoffset(start, timestamp):
@@ -13,10 +13,10 @@ def get_max_for_period(running_sum, period):
     maxpower = max((running_sum[windowsize:] - running_sum[:-windowsize]) / float(windowsize))
     return period, maxpower
 
-def get_max_average_async(data, periods):
+def get_max_average_for_periods(data, periods):
     # TODO: Identify if this is the best way to do handle async for this problem
     results = []
-    running_sum = np.cumsum(data)
+    running_sum = runningsum(data)
     pool = mp.Pool()
     for period in periods:
         pool.apply_async(get_max_for_period, args=(running_sum, period , ), callback=results.append)
@@ -37,9 +37,9 @@ def parse_fit_file(filename, fieldname):
 
 
 def get_max_power_average(filename):
-    # TODO: Update code to fill in the missing seconds
-    seconds_to_power = collections.OrderedDict({time_offset: power for time_offset, power in parse_fit_file(sys.argv[1], 'power')})
-    print(get_max_average_async(list(seconds_to_power.values()), [1, 5, 10, 15, 20]))
+    # TODO: Update code to fill in the missing seconds? 
+    seconds_to_power = OrderedDict({time_offset: power for time_offset, power in parse_fit_file(sys.argv[1], 'power')})
+    print(get_max_average_for_periods(list(seconds_to_power.values()), [1, 5, 10, 15, 20]))
 
             
 if __name__ == "__main__":

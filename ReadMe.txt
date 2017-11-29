@@ -1,22 +1,6 @@
 This application does the basic work of parsing a fit file, using the include open source
 python-fitparse library to capture the power channel as an offset from start.
 
-1. Write the most efficient method that finds the "best" 20 minute power effort.  
-   "Best" as defined as highest continuous average for the given time period.
-
-2. Find the 1, 5, 10, 15, and 20 minute "best" efforts using the method above in parallel
-
-3. This program was purposely written without best practices in mind. Rewrite and refactor to 
-   use best practices, parse additional data channels such as heart rate and speed for a cleaner approach.
-
-4. Bonus: See if you can find the subtle bug in this program.
-
-5. If you have any questions on the code or what is being asked, please don't hesitate to email.
-
-6. Please submit your completed test as a zip file, private dropbox or other private file sharing link, 
-   or using a private repo. Do not include compiled binaries.
-
-
 FIT File Background
 ------------------------------------------------------------------------------------------
 The FIT file format, developed by Dynastream, is a common format used by fitness devices
@@ -45,6 +29,6 @@ python src\main.py .\data\2012-05-31-11-17-12.fit
 On Linux:
 virtualenv venv
 . ./venv/bin/activate
-pip install ./lib/fitparse-1.0.1.zip
-python ./src/main.py ./data/2012-05-31-11-17-12.fit
+pip install -r requirements.txt
+python ./src/getmaxaverage.py ./data/2012-05-31-11-17-12.fit
 
